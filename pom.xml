@@ -72,5 +72,5 @@
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
-  </profiles>
+  </project>
 
