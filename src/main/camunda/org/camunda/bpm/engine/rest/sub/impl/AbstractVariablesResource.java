@@ -21,6 +21,10 @@ import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
+
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.engine.impl.variable.BooleanType;
@@ -38,9 +42,6 @@ import org.camunda.bpm.engine.rest.mapper.MultipartFormData;
 import org.camunda.bpm.engine.rest.mapper.MultipartFormData.FormPart;
 import org.camunda.bpm.engine.rest.sub.VariableResource;
 import org.camunda.bpm.engine.rest.util.DtoUtil;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.TypeFactory;
-import org.codehaus.jackson.type.JavaType;
 
 
 public abstract class AbstractVariablesResource implements VariableResource {
@@ -207,14 +208,10 @@ public abstract class AbstractVariablesResource implements VariableResource {
   protected Object deserializeJsonObject(String className, byte[] data) {
     try {
 
-      ObjectMapper objectMapper = new ObjectMapper();
-      JavaType type = TypeFactory.fromCanonical(className);
-
-      return objectMapper.readValue(new String(data), type);
+        return new ObjectMapper().readValue(new String(data), TypeFactory.defaultInstance().constructFromCanonical(className));
 
     } catch(Exception e) {
       throw new InvalidRequestException(Status.INTERNAL_SERVER_ERROR, "Could not deserialize JSON object: "+e.getMessage());
-
     }
   }
 

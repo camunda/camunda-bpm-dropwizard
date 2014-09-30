@@ -10,6 +10,10 @@ The power of camunda and REST in a single jar.
 _A quick description how your project can be used, including where the relevant resources can be obtained from.
 Put into another file if too big._
 
+### Noteworthy
+
+* Dropwizard does not support Java6
+
 
 ## Resources
 

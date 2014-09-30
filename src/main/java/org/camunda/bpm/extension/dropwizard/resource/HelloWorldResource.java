@@ -1,7 +1,8 @@
-package org.camunda.bpm.extension.dropwizard;
+package org.camunda.bpm.extension.dropwizard.resource;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
+import org.camunda.bpm.extension.dropwizard.Saying;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -10,6 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Deprecated
 @Path("/hello-world")
 @Produces(MediaType.APPLICATION_JSON)
 public class HelloWorldResource {

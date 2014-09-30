@@ -3,9 +3,7 @@ package org.camunda.bpm.extension.dropwizard;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 
-/**
- * Created by jangalinski on 29.09.14.
- */
+@Deprecated
 public class Saying {
     private long id;
 

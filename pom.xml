@@ -15,7 +15,7 @@
     </parent>
 
     <properties>
-        <java.version>1.6</java.version>
+        <version.java>1.7</version.java>
         <mainClass>org.camunda.bpm.extension.dropwizard.CamundaApplication</mainClass>
 
         <encoding>UTF-8</encoding>
@@ -24,7 +24,7 @@
 
         <camunda.version>7.1.0-Final</camunda.version>
         <dropwizard.version>0.7.1</dropwizard.version>
-        <jackson.version>1.9.11</jackson.version>
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
     </properties>
 
     <dependencyManagement>
@@ -47,11 +47,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-jaxrs</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
             <exclusions>
@@ -71,22 +66,21 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.2.2</version>
+            <version>${commons-fileupload.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.180</version>
+        </dependency>
     </dependencies>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -150,7 +144,6 @@
         </license>
     </licenses>
 
-    <!-- replace YOUR_REPOSITORY_ID with your repository name -->
     <scm>
         <connection>scm:git:git@github.com:camunda/camunda-bpm-dropwizard.git</connection>
         <url>scm:git:git@github.com:camunda/camunda-bpm-dropwizard.git</url>

@@ -1,0 +1,10 @@
+template: Hello, %s!
+defaultName: Stranger
+
+server:
+  type: simple
+  applicationContextPath: /rest
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
