@@ -1,45 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.camunda.bpm.extension</groupId>
-    <!-- replace YOUR_ARTIFACT_ID with the name of your choice which describes your project -->
-    <artifactId>YOUR_ARTIFACT_ID</artifactId>
-    <version>1.0.0</version>
+    <artifactId>camunda-bpm-dropwizard</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
-    <packaging>pom</packaging>
-
-    <!-- use camunda-release-parent for relasing to maven central and camunda nexus -->
     <parent>
         <groupId>org.camunda</groupId>
         <artifactId>camunda-release-parent</artifactId>
         <version>2.2</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
-    <!-- uncomment to add custom repositores if you need some
-    <repositories>
-        <repository>
-            <id>camunda-bpm-nexus</id>
-            <name>camunda-bpm-nexus</name>
-            <url>https://app.camunda.com/nexus/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>jboss-public-repository</id>
-            <name>JBoss Repository</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    -->
+    <properties>
+        <java.version>1.6</java.version>
+        <mainClass>org.camunda.bpm.extension.dropwizard.CamundaApplication</mainClass>
+
+        <encoding>UTF-8</encoding>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.build.resourceEncoding>${encoding}</project.build.resourceEncoding>
+
+        <camunda.version>7.1.0-Final</camunda.version>
+        <dropwizard.version>0.7.1</dropwizard.version>
+        <jackson.version>1.9.11</jackson.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.camunda.bpm</groupId>
+                <artifactId>camunda-bom</artifactId>
+                <version>${camunda.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-core</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine</artifactId>
+            <exclusions>
+                <exclusion>
+                    <!-- we use slf4j instead of jcl -->
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>${mainClass}</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals><goal>add-source</goal></goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/camunda</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <!-- change to your license -->
@@ -52,9 +152,9 @@
 
     <!-- replace YOUR_REPOSITORY_ID with your repository name -->
     <scm>
-        <connection>scm:git:git@github.com:camunda/YOUR_REPOSITORY_ID.git</connection>
-        <url>scm:git:git@github.com:camunda/YOUR_REPOSITORY_ID.git</url>
-        <developerConnection>scm:git:git@github.com:camunda/YOUR_REPOSITORY_ID.git</developerConnection>
+        <connection>scm:git:git@github.com:camunda/camunda-bpm-dropwizard.git</connection>
+        <url>scm:git:git@github.com:camunda/camunda-bpm-dropwizard.git</url>
+        <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-dropwizard.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -73,5 +173,4 @@
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
-  </project>
-
+</project>

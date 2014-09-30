@@ -1,6 +1,6 @@
-# _Name of Project_
+# camunda-bpm-dropwizard
 
-_Short description of project_
+The power of camunda and REST in a single jar.
 
 ![Screenshot or code snippet](http://placehold.it/550x350&text=Image%20or%20code%20snippet%20if%20applicable)
 
@@ -31,14 +31,28 @@ _specify a short list of things that yet need to be done (unless you organize it
 **done**
 - add feature A
 
+## Useful resources
+
+### How to import the REST classes (instead the war file)
+
+```xml
+<dependency> 
+  <groupId>org.camunda.bpm</groupId> 
+  <artifactId>camunda-engine-rest</artifactId> 
+  <classifier>classes</classifier> 
+  <version>7.1.0-Final</version> 
+</dependency> 
+```
+
+### example with spring
+
+* [embedded-spring-rest](https://github.com/camunda/camunda-bpm-examples/tree/master/deployment/embedded-spring-rest)
 
 ## Maintainer
 
-_Your Name with link to Github profile or email_
+* [Jan Galinski](https://githaub.com/jangalinski), [Holisticon AG](http://www.holisticon.de/)
 
 
 ## License
 
-Apache License, Version 2.0
-
-_(Choose among Apache License, Version 2.0 or The MIT License. Update file LICENSE as well.)_
+* [Apache License, Version 2.0](./LICENSE)
