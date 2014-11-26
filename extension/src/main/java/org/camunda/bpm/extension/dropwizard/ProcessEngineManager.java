@@ -1,13 +1,15 @@
+package org.camunda.bpm.extension.dropwizard;
+
+
 import io.dropwizard.lifecycle.Managed;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.extension.dropwizard.CamundaDropwizardApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ProcessEngineManager implements Managed {
 
-    private static final String JDBC_URL = String.format("jdbc:h2:mem:%s;DB_CLOSE_DELAY=1000", CamundaDropwizardApplication.NAME);
+    private static final String JDBC_URL = String.format("jdbc:h2:mem:%s;DB_CLOSE_DELAY=1000", "camunda-dropwizard");
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private ProcessEngine processEngine;
 

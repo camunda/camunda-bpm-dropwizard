@@ -3,6 +3,7 @@ package org.camunda.bpm.extension.dropwizard;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.camunda.bpm.exdropwizard.ProcessEngineManager;
 import org.camunda.bpm.extension.dropwizard.health.ProcessEngineRunning;
 
 public class CamundaDropwizardApplication extends Application<CamundaDropwizardApplicationConfiguration> {

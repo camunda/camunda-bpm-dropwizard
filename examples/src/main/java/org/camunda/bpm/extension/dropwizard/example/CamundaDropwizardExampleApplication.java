@@ -2,7 +2,9 @@ package org.camunda.bpm.extension.dropwizard.example;
 
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.camunda.bpm.extension.dropwizard.CamundaBundle;
 
 public class CamundaDropwizardExampleApplication extends Application<CamundaDropwizardExampleApplication.Config> {
 
@@ -10,6 +12,11 @@ public class CamundaDropwizardExampleApplication extends Application<CamundaDrop
     @Override
     public void run(Config configuration, Environment environment) throws Exception {
         // nothing so far
+    }
+
+    @Override
+    public void initialize(Bootstrap<Config> bootstrap) {
+        bootstrap.addBundle(new CamundaBundle());
     }
 
     public static class Config extends Configuration {

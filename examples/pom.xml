@@ -18,6 +18,11 @@
             <artifactId>camunda-bpm-dropwizard</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.180</version>
+        </dependency>
     </dependencies>
 
     <properties>
