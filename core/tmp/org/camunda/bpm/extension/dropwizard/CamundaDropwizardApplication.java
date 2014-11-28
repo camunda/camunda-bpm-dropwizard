@@ -13,7 +13,7 @@ public class CamundaDropwizardApplication extends Application<CamundaDropwizardA
     @Override
     public void run(final CamundaDropwizardApplicationConfiguration configuration, final Environment environment) throws Exception {
 
-        environment.lifecycle().manage(new ProcessEngineManager());
+        environment.lifecycle().manage(new ProcessEngineManager(processApplication));
 
 
         environment.healthChecks().register("engine", new ProcessEngineRunning());

@@ -1,2 +1,7 @@
 server:
-  type: simple
+  applicationConnectors:
+  - type: http
+    port: 4567
+  adminConnectors:
+  - type: http
+    port: 4568

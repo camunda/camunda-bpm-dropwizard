@@ -8,15 +8,17 @@ import org.camunda.bpm.extension.dropwizard.CamundaBundle;
 
 public class CamundaDropwizardExampleApplication extends Application<CamundaDropwizardExampleApplication.Config> {
 
+    private final ExampleProcessApplication processApplication = new ExampleProcessApplication();
 
     @Override
     public void run(Config configuration, Environment environment) throws Exception {
-        // nothing so far
+
     }
 
     @Override
-    public void initialize(Bootstrap<Config> bootstrap) {
-        bootstrap.addBundle(new CamundaBundle());
+    public void initialize(final Bootstrap<Config> bootstrap) {
+
+        bootstrap.addBundle(new CamundaBundle(processApplication));
     }
 
     public static class Config extends Configuration {
