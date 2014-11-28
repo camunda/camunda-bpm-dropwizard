@@ -24,7 +24,7 @@ public class CamundaBundle implements Bundle {
     public void run(final Environment environment) {
         environment.lifecycle().manage(processEngineManager);
 
-        environment.servlets().addServletListeners(new DropwizardProcessApplication());
+        //environment.servlets().addServletListeners(new DropwizardProcessApplication());
 
         environment.healthChecks().register("dummy-camunda", new HealthCheck() {
             @Override

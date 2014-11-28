@@ -51,6 +51,7 @@ _specify a short list of things that yet need to be done (unless you organize it
 ### example with spring
 
 * [embedded-spring-rest](https://github.com/camunda/camunda-bpm-examples/tree/master/deployment/embedded-spring-rest)
+* http://docs.camunda.org/latest/guides/user-guide/#process-engine-process-engine-bootstrapping
 
 ## Maintainer
 

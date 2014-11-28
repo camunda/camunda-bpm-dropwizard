@@ -27,17 +27,14 @@ public class ProcessEngineManager implements Managed {
     @Override
     public void start() {
         // TODO make configurable via yaml
-        processEngine = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
-                .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE)
-                .setJdbcUrl(JDBC_URL)
+        processEngine = ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration()
                 .setJobExecutorActivate(true)
                 .setHistory(ProcessEngineConfiguration.HISTORY_FULL)
-                .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE)
                 .buildProcessEngine();
 
-        logger.info("registered default engine: {}", ProcessEngines.getDefaultProcessEngine());
+        logger.info("registered default engine: '{}'", ProcessEngines.getDefaultProcessEngine().getProcessEngineConfiguration().getProcessEngineName());
 
-        //processApplication.deploy();
+        processApplication.deploy();
     }
 
     @Override

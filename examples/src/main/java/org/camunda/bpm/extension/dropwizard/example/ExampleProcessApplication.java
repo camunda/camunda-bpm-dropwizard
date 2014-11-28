@@ -4,7 +4,7 @@ import org.camunda.bpm.application.ProcessApplication;
 import org.camunda.bpm.application.impl.EmbeddedProcessApplication;
 import org.camunda.bpm.application.impl.ServletProcessApplication;
 
-@ProcessApplication("Example Application")
+@ProcessApplication("camunda-dropwizard-example")
 public class ExampleProcessApplication extends EmbeddedProcessApplication {
     // empty implementation
 }

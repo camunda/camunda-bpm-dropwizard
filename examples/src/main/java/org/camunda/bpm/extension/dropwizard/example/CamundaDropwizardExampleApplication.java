@@ -4,6 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.camunda.bpm.application.impl.EmbeddedProcessApplication;
 import org.camunda.bpm.extension.dropwizard.CamundaBundle;
 
 public class CamundaDropwizardExampleApplication extends Application<CamundaDropwizardExampleApplication.Config> {
