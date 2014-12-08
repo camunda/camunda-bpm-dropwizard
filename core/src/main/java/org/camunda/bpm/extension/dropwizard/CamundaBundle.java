@@ -5,32 +5,31 @@ import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.camunda.bpm.application.impl.EmbeddedProcessApplication;
+import org.camunda.bpm.extension.dropwizard.healthcheck.CamundaHealthChecks;
+import org.camunda.bpm.extension.dropwizard.task.StartProcessTask;
+import org.slf4j.Logger;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class CamundaBundle implements Bundle {
 
-    private final EmbeddedProcessApplication processApplication;
     private ProcessEngineManager processEngineManager;
 
-    public CamundaBundle(EmbeddedProcessApplication processApplication) {
-        this.processApplication = processApplication;
-    }
+    private final Logger logger = getLogger(this.getClass());
 
     @Override
     public void initialize(final Bootstrap<?> bootstrap) {
-        processEngineManager = new ProcessEngineManager(processApplication);
+        processEngineManager = new ProcessEngineManager();
     }
 
     @Override
     public void run(final Environment environment) {
         environment.lifecycle().manage(processEngineManager);
 
-        //environment.servlets().addServletListeners(new DropwizardProcessApplication());
+        environment.servlets().addServletListeners(new DropwizardProcessApplication());
 
-        environment.healthChecks().register("dummy-camunda", new HealthCheck() {
-            @Override
-            protected Result check() throws Exception {
-                return Result.healthy();
-            }
-        });
+        CamundaHealthChecks.processEngineIsRunning(environment);
+
+        environment.admin().addTask(new StartProcessTask());
     }
 }

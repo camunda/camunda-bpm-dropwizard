@@ -19,6 +19,8 @@ public class ProcessEngineManagerTest {
         final ProcessEngine defaultProcessEngine = ProcessEngines.getDefaultProcessEngine();
         assertThat(defaultProcessEngine).isNotNull();
         assertThat(defaultProcessEngine.getName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
+
+        manager.stop();
     }
 
 }
