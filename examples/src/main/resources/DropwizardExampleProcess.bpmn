@@ -4,7 +4,7 @@
     <bpmn2:startEvent id="StartEvent_1">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:serviceTask id="service_say_hello" camunda:class="Foo" name="Say Hello">
+    <bpmn2:serviceTask id="service_say_hello" camunda:class="org.camunda.bpm.extension.dropwizard.example.delegate.DoSomethingDelegate" name="Say Hello">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
     </bpmn2:serviceTask>
