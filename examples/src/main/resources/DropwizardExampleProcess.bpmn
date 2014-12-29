@@ -10,6 +10,9 @@
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="service_say_hello"/>
     <bpmn2:endEvent id="EndEvent_1">
+      <bpmn2:extensionElements>
+        <camunda:executionListener class="org.camunda.bpm.extension.dropwizard.example.delegate.FinishedProcessListener" event="end"/>
+      </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
     </bpmn2:endEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="service_say_hello" targetRef="IntermediateThrowEvent_1"/>
@@ -17,7 +20,7 @@
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
       <bpmn2:timerEventDefinition id="_TimerEventDefinition_2">
-        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT5S</bpmn2:timeDuration>
+        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT1M</bpmn2:timeDuration>
       </bpmn2:timerEventDefinition>
     </bpmn2:intermediateCatchEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="IntermediateThrowEvent_1" targetRef="EndEvent_1"/>

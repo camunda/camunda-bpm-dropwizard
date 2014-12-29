@@ -12,7 +12,7 @@ Put into another file if too big._
 
 ### Noteworthy
 
-* Dropwizard does not support Java6
+* Dropwizard does not support Java6, so despite the camunda standard compiler settings, this has do be done with targetJDK=1.7
 
 
 ## Resources
@@ -55,8 +55,7 @@ _specify a short list of things that yet need to be done (unless you organize it
 
 ## Maintainer
 
-* [Jan Galinski](https://githaub.com/jangalinski), [Holisticon AG](http://www.holisticon.de/)
-
+* [Jan Galinski](https://github.com/jangalinski), [Holisticon AG](http://www.holisticon.de/)
 
 ## License
 

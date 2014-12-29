@@ -1,6 +1,6 @@
 package org.camunda.bpm.extension.dropwizard;
 
-import io.dropwizard.Bundle;
+import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
@@ -10,27 +10,19 @@ import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class CamundaBundle implements Bundle {
-
-  private ProcessEngineManager processEngineManager;
+/**
+ * The bundle is the hook that a developer of a camunda dropwizard application has to add so the engine
+ * and process application are configured correctly.
+ */
+public class CamundaBundle implements ConfiguredBundle<CamundaConfiguration> {
 
   private final Logger logger = getLogger(this.getClass());
 
-  private final ProcessEngineConfiguration processEngineConfiguration;
-
-  public CamundaBundle(final ProcessEngineConfiguration processEngineConfiguration) {
-    this.processEngineConfiguration = processEngineConfiguration;
-  }
-
-
   @Override
-  public void initialize(final Bootstrap<?> bootstrap) {
-    processEngineManager = new ProcessEngineManager(processEngineConfiguration);
-  }
+  public void run(final CamundaConfiguration configuration, final Environment environment) throws Exception {
+    final ProcessEngineConfiguration processEngineConfiguration = configuration.getProcessEngineConfiguration();
 
-  @Override
-  public void run(final Environment environment) {
-    environment.lifecycle().manage(processEngineManager);
+    environment.lifecycle().manage(new ProcessEngineManager(processEngineConfiguration));
 
     environment.servlets().addServletListeners(new DropwizardProcessApplication());
 
@@ -38,4 +30,10 @@ public class CamundaBundle implements Bundle {
 
     environment.admin().addTask(new StartProcessTask());
   }
+
+  @Override
+  public void initialize(final Bootstrap<?> bootstrap) {
+    // nothing to do here, we need access to configuration and we won't have that until run() is executed.
+  }
+
 }

@@ -5,3 +5,13 @@ server:
   adminConnectors:
   - type: http
     port: 4568
+
+camundaDatabase:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+  # the username
+  user: camunda
+  # the password
+  password: camunda
+  # the JDBC URL
+  url: jdbc:mysql://192.168.59.103/camunda

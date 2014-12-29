@@ -1,13 +1,12 @@
 package org.camunda.bpm.extension.dropwizard.example;
 
 import io.dropwizard.Application;
-import io.dropwizard.Configuration;
 import io.dropwizard.lifecycle.ServerLifecycleListener;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.extension.dropwizard.CamundaBundle;
+import org.camunda.bpm.extension.dropwizard.CamundaConfiguration;
 import org.camunda.bpm.extension.dropwizard.healthcheck.CamundaHealthChecks;
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
@@ -35,17 +34,15 @@ public class CamundaDropwizardExampleApplication extends Application<CamundaDrop
 
   @Override
   public void initialize(final Bootstrap<Config> bootstrap) {
-    bootstrap.addBundle(new CamundaBundle(ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
-      .setJobExecutorActivate(true)
-      .setJdbcUrl("jdbc:mysql://janhoo.net/janhoone_camunda")
-      .setJdbcUsername("janhoone_camunda")
-      .setJdbcPassword("Fa+7cAu*4kaU;5a")
-      .setJdbcDriver("com.mysql.jdbc.Driver")
-      .setHistory(ProcessEngineConfiguration.HISTORY_FULL)));
+    // This is basically all you have to do (as long as you provide the necessary configuration yaml).
+    bootstrap.addBundle(new CamundaBundle());
   }
 
-  public static class Config extends Configuration {
-    // empty
+  /**
+   * Just a dummy to ensure customization is still possible. Uses only super()-features.
+   */
+  public static class Config extends CamundaConfiguration {
+    // empty on purpose
   }
 
   public static void main(String... args) throws Exception {
