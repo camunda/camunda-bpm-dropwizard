@@ -10,8 +10,7 @@ follow the installation directions of boot2docker, see EasyMysql/README.md.
 
 Afterwards, before running the examples, start the mysql-db using
 
-    docker run -d -p 3306:3306 -e user="camunda" -e password="camunda" -e right="WRITE" -e url="https://raw.githubusercontent.com/jangalinski/camunda-bpm-dropwizard/master/examples/src/test/resources/camunda.sql" mysqldb
-
+    ./examples/docker_mysql.sh
 
 To admin the database without installing any additional software use [Adminer](http://www.adminer.org/de/), just
 start a local php server running:
