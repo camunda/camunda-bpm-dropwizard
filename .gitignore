@@ -18,3 +18,8 @@ dependency-reduced-pom.xml
 # OSX
 #
 .DS_Store
+#
+# AS
+#
+_jboss/
+_tmp/

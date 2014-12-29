@@ -6,13 +6,13 @@ import org.camunda.bpm.engine.ProcessEngines;
 
 public class ProcessEngineIsRunning extends HealthCheck {
 
-    @Override
-    protected Result check() throws Exception {
-        try {
-            ProcessEngines.getDefaultProcessEngine().getIdentityService().createGroupQuery().list();
-            return Result.healthy();
-        } catch (final Exception e) {
-            return Result.unhealthy(e);
-        }
+  @Override
+  protected Result check() throws Exception {
+    try {
+      ProcessEngines.getDefaultProcessEngine().getIdentityService().createGroupQuery().list();
+      return Result.healthy();
+    } catch (final Exception e) {
+      return Result.unhealthy(e);
     }
+  }
 }

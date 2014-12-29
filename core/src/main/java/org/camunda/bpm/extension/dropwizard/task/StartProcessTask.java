@@ -8,12 +8,12 @@ import java.io.PrintWriter;
 
 public class StartProcessTask extends Task {
 
-    public StartProcessTask() {
-        super("start_process");
-    }
+  public StartProcessTask() {
+    super("start_process");
+  }
 
-    @Override
-    public void execute(ImmutableMultimap<String, String> immutableMultimap, final PrintWriter out) throws Exception {
-        out.println("task executed");
-    }
+  @Override
+  public void execute(ImmutableMultimap<String, String> immutableMultimap, final PrintWriter out) throws Exception {
+    out.println("task executed");
+  }
 }

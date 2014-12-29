@@ -4,15 +4,23 @@
     <bpmn2:startEvent id="StartEvent_1">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:serviceTask id="service_say_hello" camunda:class="org.camunda.bpm.extension.dropwizard.example.delegate.DoSomethingDelegate" name="Say Hello">
+    <bpmn2:serviceTask id="service_say_hello" camunda:class="org.camunda.bpm.extension.dropwizard.example.delegate.DoSomethingDelegate" camunda:async="true" name="Say Hello">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="service_say_hello"/>
     <bpmn2:endEvent id="EndEvent_1">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="service_say_hello" targetRef="EndEvent_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="service_say_hello" targetRef="IntermediateThrowEvent_1"/>
+    <bpmn2:intermediateCatchEvent id="IntermediateThrowEvent_1">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:timerEventDefinition id="_TimerEventDefinition_2">
+        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT5S</bpmn2:timeDuration>
+      </bpmn2:timerEventDefinition>
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="IntermediateThrowEvent_1" targetRef="EndEvent_1"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process_dw_example">
@@ -27,11 +35,30 @@
         <di:waypoint xsi:type="dc:Point" x="165.0" y="202.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_EndEvent_28" bpmnElement="EndEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="315.0" y="184.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="648.0" y="184.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="666.0" y="225.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_ServiceTask_58" targetElement="_BPMNShape_EndEvent_28">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_IntermediateThrowEvent_2" targetElement="_BPMNShape_EndEvent_28">
+        <di:waypoint xsi:type="dc:Point" x="391.0" y="202.0"/>
+        <di:waypoint xsi:type="dc:Point" x="648.0" y="202.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="413.0" y="202.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_IntermediateThrowEvent_2" bpmnElement="IntermediateThrowEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="355.0" y="184.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="373.0" y="225.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="_BPMNShape_ServiceTask_58" targetElement="_BPMNShape_IntermediateThrowEvent_2">
         <di:waypoint xsi:type="dc:Point" x="265.0" y="202.0"/>
-        <di:waypoint xsi:type="dc:Point" x="315.0" y="202.0"/>
+        <di:waypoint xsi:type="dc:Point" x="355.0" y="202.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="287.0" y="202.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

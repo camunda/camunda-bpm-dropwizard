@@ -5,5 +5,5 @@ import org.camunda.bpm.application.impl.ServletProcessApplication;
 
 @ProcessApplication
 public class DropwizardProcessApplication extends ServletProcessApplication {
-    // empty
+  // empty
 }

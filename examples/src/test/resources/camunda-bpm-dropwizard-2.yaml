@@ -1,0 +1,7 @@
+server:
+  applicationConnectors:
+  - type: http
+    port: 4577
+  adminConnectors:
+  - type: http
+    port: 4578

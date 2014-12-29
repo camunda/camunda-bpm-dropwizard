@@ -1,31 +1,32 @@
 package org.camunda.bpm.extension.dropwizard;
 
+import io.dropwizard.lifecycle.Managed;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.dropwizard.lifecycle.Managed;
-
 public class ProcessEngineManager implements Managed {
 
-    private static final String JDBC_URL = String.format("jdbc:h2:mem:%s;DB_CLOSE_DELAY=1000", "camunda-dropwizard");
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private ProcessEngine processEngine;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private ProcessEngine processEngine;
 
-    @Override
-    public void start() {
-        // FIXME make configurable via yaml
-        processEngine = ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration().setJobExecutorActivate(true)
-                .setHistory(ProcessEngineConfiguration.HISTORY_FULL).buildProcessEngine();
+  private final ProcessEngineConfiguration processEngineConfiguration;
 
-        RuntimeContainerDelegate.INSTANCE.get().registerProcessEngine(processEngine);
-    }
+  public ProcessEngineManager(final ProcessEngineConfiguration processEngineConfiguration) {
+    this.processEngineConfiguration = processEngineConfiguration;
+  }
 
-    @Override
-    public void stop() {
-        processEngine.close();
-    }
+  @Override
+  public void start() {
+    processEngine = processEngineConfiguration.buildProcessEngine();
+    RuntimeContainerDelegate.INSTANCE.get().registerProcessEngine(processEngine);
+  }
+
+  @Override
+  public void stop() {
+    processEngine.close();
+  }
 
 }
