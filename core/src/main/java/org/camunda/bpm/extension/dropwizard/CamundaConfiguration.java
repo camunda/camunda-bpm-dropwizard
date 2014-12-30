@@ -1,61 +1,137 @@
 package org.camunda.bpm.extension.dropwizard;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Optional;
+import com.google.common.base.Throwables;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.jackson.Jackson;
+import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.setup.Environment;
+import io.dropwizard.validation.OneOf;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import sun.security.provider.DSAKeyFactory;
+import org.camunda.bpm.extension.dropwizard.db.GetHistoryLevelDao;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.skife.jdbi.v2.DBI;
+import org.slf4j.Logger;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
+import static com.google.common.base.Throwables.propagate;
+import static org.camunda.bpm.engine.ProcessEngineConfiguration.HISTORY_ACTIVITY;
+import static org.camunda.bpm.engine.ProcessEngineConfiguration.HISTORY_AUDIT;
+import static org.camunda.bpm.engine.ProcessEngineConfiguration.HISTORY_FULL;
+import static org.camunda.bpm.engine.ProcessEngineConfiguration.HISTORY_NONE;
+import static org.slf4j.LoggerFactory.getLogger;
 
 
-public class CamundaConfiguration extends Configuration {
+public class CamundaConfiguration extends Configuration implements Serializable {
 
-  /**
-   * Init with a default configuration. All values set on camundaConfiguration are propagated to this config.
-   * TODO: jobexecutor and history must be configurable
-   */
-  // @formatter:off
-  private final ProcessEngineConfiguration processEngineConfiguration = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
-    .setJobExecutorActivate(true)
-    .setHistory(ProcessEngineConfiguration.HISTORY_FULL);
-  // @formatter:on
+  public static final String HISTORY_AUTO = "auto";
+  private static final long serialVersionUID = 1L;
 
+  private final Logger logger = getLogger(this.getClass());
 
-  /**
-   * Every camunda engine define a dataSource, so setting a camundaDatabase DataSourceFactory is required.
-   * To simplify standalone operations, the camunda default (h2) is applied to the dropwizard datasourceFactory on
-   * initialization.
-   */
-  @Valid
   @NotNull
+  @Valid
   @JsonProperty
-  private DataSourceFactory camundaDatabase = new DataSourceFactory() {{
+  private final ProcessEngineConfigurationFactory camunda = new ProcessEngineConfigurationFactory();
 
-    setUrl(processEngineConfiguration.getJdbcUrl());
-    setUser(processEngineConfiguration.getJdbcUsername());
-    setPassword(processEngineConfiguration.getJdbcPassword());
-    setDriverClass(processEngineConfiguration.getJdbcDriver());
-
-  }};
-
-  /**
-   * @return the database configuration
-   */
-  public DataSourceFactory getCamundaDataSourceFactory() {
-    return camundaDatabase;
+  public ProcessEngineConfigurationFactory getCamunda() {
+    return camunda;
   }
 
-  /**
-   * @return the processEngineConfiguration based on standaloneDefaults and camundaDatabase configuration.
-   */
-  public ProcessEngineConfiguration getProcessEngineConfiguration() {
-    processEngineConfiguration.setJdbcDriver(camundaDatabase.getDriverClass());
-    processEngineConfiguration.setJdbcUrl(camundaDatabase.getUrl());
-    processEngineConfiguration.setJdbcUsername(camundaDatabase.getUser());
-    processEngineConfiguration.setJdbcPassword(camundaDatabase.getPassword());
-
-    return processEngineConfiguration;
+  public ProcessEngineConfiguration buildProcessEngineConfiguration() {
+    // @formatter:off
+    return ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
+      .setJdbcDriver(camunda.database.getDriverClass())
+      .setJdbcUrl(camunda.database.getUrl())
+      .setJdbcUsername(camunda.database.getUser())
+      .setJdbcPassword(camunda.database.getPassword())
+      .setHistory(camunda.historyLevel)
+      .setJobExecutorActivate(camunda.jobExecutorActivate);
+    // @formatter:on
   }
+
+  public CamundaConfiguration overwriteHistoryLevel(final Environment environment) {
+    if (HISTORY_AUTO.equalsIgnoreCase(camunda.historyLevel)) {
+      final Optional<String> historyLevel = selectHistoryLevel(environment);
+
+      if (historyLevel.isPresent()) {
+        camunda.historyLevel = historyLevel.get();
+        logger.info("historyLevel detected automatically: {}", camunda.historyLevel);
+      } else {
+        camunda.historyLevel = HISTORY_AUDIT;
+        logger.info("historyLevel not set on db, using default: {}", camunda.historyLevel);
+      }
+    }
+    return this;
+  }
+
+  @VisibleForTesting
+  Optional<String> selectHistoryLevel(final Environment environment) {
+    try {
+      final DBI dbi = new DBIFactory().build(environment, camunda.database, "camundaDataSource");
+      return dbi.onDemand(GetHistoryLevelDao.class).getFailsafe();
+    } catch (ClassNotFoundException e) {
+      throw propagate(e);
+    }
+  }
+
+  @Override
+  public String toString() {
+    try {
+      return Jackson.newObjectMapper().writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+      throw Throwables.propagate(e);
+    }
+  }
+
+  public static class ProcessEngineConfigurationFactory implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Valid
+    @NotNull
+    @JsonProperty
+    private final DataSourceFactory database = new DataSourceFactory();
+
+    @NotNull
+    @JsonProperty
+    private boolean jobExecutorActivate;
+
+    @NotEmpty
+    @JsonProperty
+    @OneOf({HISTORY_NONE, HISTORY_ACTIVITY, HISTORY_AUDIT, HISTORY_FULL, HISTORY_AUTO})
+    private String historyLevel;
+
+    public ProcessEngineConfigurationFactory() {
+      // init with standalone defaults
+      final ProcessEngineConfiguration p = ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration();
+
+      this.jobExecutorActivate = p.isJobExecutorActivate();
+      this.historyLevel = p.getHistory();
+
+      this.database.setUrl(p.getJdbcUrl());
+      this.database.setUser(p.getJdbcUsername());
+      this.database.setPassword(p.getJdbcPassword());
+      this.database.setDriverClass(p.getJdbcDriver());
+    }
+
+    public DataSourceFactory getDatabase() {
+      return database;
+    }
+
+    public String getHistoryLevel() {
+      return historyLevel;
+    }
+
+    public void setHistoryLevel(String historyLevel) {
+      this.historyLevel = historyLevel;
+    }
+  }
+
 }
