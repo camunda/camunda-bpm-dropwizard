@@ -53,7 +53,8 @@ public class CamundaConfiguration extends Configuration implements Serializable 
       .setJdbcUsername(camunda.database.getUser())
       .setJdbcPassword(camunda.database.getPassword())
       .setHistory(camunda.historyLevel)
-      .setJobExecutorActivate(camunda.jobExecutorActivate);
+      .setJobExecutorActivate(false) // we activate the executor via LifecycleListener (see CamundaBundle)
+      .setJobExecutorDeploymentAware(camunda.jobExecutorDeploymentAware);
     // @formatter:on
   }
 
@@ -103,6 +104,14 @@ public class CamundaConfiguration extends Configuration implements Serializable 
     @JsonProperty
     private boolean jobExecutorActivate;
 
+    /**
+     * Since it is most likely that dropwizard-camunda-processes will run as a heterogeneous cluster,
+     * the default value is changed to <code>true</code>.
+     */
+    @NotNull
+    @JsonProperty
+    private boolean jobExecutorDeploymentAware = true;
+
     @NotEmpty
     @JsonProperty
     @OneOf({HISTORY_NONE, HISTORY_ACTIVITY, HISTORY_AUDIT, HISTORY_FULL, HISTORY_AUTO})
@@ -125,12 +134,8 @@ public class CamundaConfiguration extends Configuration implements Serializable 
       return database;
     }
 
-    public String getHistoryLevel() {
-      return historyLevel;
-    }
-
-    public void setHistoryLevel(String historyLevel) {
-      this.historyLevel = historyLevel;
+    public boolean isJobExecutorActivate() {
+      return jobExecutorActivate;
     }
   }
 

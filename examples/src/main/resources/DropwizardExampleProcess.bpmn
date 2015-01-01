@@ -13,17 +13,25 @@
       <bpmn2:extensionElements>
         <camunda:executionListener class="org.camunda.bpm.extension.dropwizard.example.delegate.FinishedProcessListener" event="end"/>
       </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="service_say_hello" targetRef="IntermediateThrowEvent_1"/>
     <bpmn2:intermediateCatchEvent id="IntermediateThrowEvent_1">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
       <bpmn2:timerEventDefinition id="_TimerEventDefinition_2">
-        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT1M</bpmn2:timeDuration>
+        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">PT0.1S</bpmn2:timeDuration>
       </bpmn2:timerEventDefinition>
     </bpmn2:intermediateCatchEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="IntermediateThrowEvent_1" targetRef="EndEvent_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="IntermediateThrowEvent_1" targetRef="UserTask_1"/>
+    <bpmn2:userTask id="UserTask_1" camunda:assignee="demo" camunda:formKey="embedded:app:forms/request-loan.html" name="Add customer id">
+      <bpmn2:extensionElements>
+        <camunda:taskListener class="org.camunda.bpm.extension.dropwizard.example.delegate.TaskCreated" event="create"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="UserTask_1" targetRef="EndEvent_1"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process_dw_example">
@@ -43,9 +51,11 @@
           <dc:Bounds height="0.0" width="0.0" x="666.0" y="225.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_IntermediateThrowEvent_2" targetElement="_BPMNShape_EndEvent_28">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_IntermediateThrowEvent_2" targetElement="_BPMNShape_UserTask_2">
         <di:waypoint xsi:type="dc:Point" x="391.0" y="202.0"/>
-        <di:waypoint xsi:type="dc:Point" x="648.0" y="202.0"/>
+        <di:waypoint xsi:type="dc:Point" x="429.0" y="202.0"/>
+        <di:waypoint xsi:type="dc:Point" x="429.0" y="205.0"/>
+        <di:waypoint xsi:type="dc:Point" x="468.0" y="205.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="6.0" width="6.0" x="413.0" y="202.0"/>
         </bpmndi:BPMNLabel>
@@ -62,6 +72,15 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds height="6.0" width="6.0" x="287.0" y="202.0"/>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_UserTask_2" bpmnElement="UserTask_1">
+        <dc:Bounds height="80.0" width="100.0" x="468.0" y="165.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="_BPMNShape_UserTask_2" targetElement="_BPMNShape_EndEvent_28">
+        <di:waypoint xsi:type="dc:Point" x="568.0" y="205.0"/>
+        <di:waypoint xsi:type="dc:Point" x="608.0" y="205.0"/>
+        <di:waypoint xsi:type="dc:Point" x="608.0" y="202.0"/>
+        <di:waypoint xsi:type="dc:Point" x="648.0" y="202.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

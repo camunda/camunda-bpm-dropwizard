@@ -1,19 +1,17 @@
 package org.camunda.bpm.extension.dropwizard;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Throwables;
 import io.dropwizard.ConfiguredBundle;
-import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.lifecycle.ServerLifecycleListener;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.extension.dropwizard.db.GetHistoryLevelDao;
+import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.extension.dropwizard.function.ActivateJobExecutor;
 import org.camunda.bpm.extension.dropwizard.healthcheck.CamundaHealthChecks;
-import org.camunda.bpm.extension.dropwizard.task.StartProcessTask;
-import org.skife.jdbi.v2.DBI;
+import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
 
-import static com.google.common.base.Throwables.propagate;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -34,11 +32,15 @@ public class CamundaBundle implements ConfiguredBundle<CamundaConfiguration> {
 
     environment.lifecycle().manage(new ProcessEngineManager(processEngineConfiguration));
 
+    if (configuration.getCamunda().isJobExecutorActivate()) {
+      environment.lifecycle().addServerLifecycleListener(ActivateJobExecutor.serverLifecycleListener());
+    }
+
     environment.servlets().addServletListeners(new DropwizardProcessApplication());
 
     CamundaHealthChecks.processEngineIsRunning(environment);
 
-    environment.admin().addTask(new StartProcessTask());
+    environment.admin().addTask(ActivateJobExecutor.task());
   }
 
 

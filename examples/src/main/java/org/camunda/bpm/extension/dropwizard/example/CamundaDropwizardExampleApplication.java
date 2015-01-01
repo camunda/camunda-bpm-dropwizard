@@ -7,6 +7,7 @@ import io.dropwizard.setup.Environment;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.extension.dropwizard.CamundaBundle;
 import org.camunda.bpm.extension.dropwizard.CamundaConfiguration;
+import org.camunda.bpm.extension.dropwizard.example.task.StartProcessTask;
 import org.camunda.bpm.extension.dropwizard.healthcheck.CamundaHealthChecks;
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
@@ -22,11 +23,13 @@ public class CamundaDropwizardExampleApplication extends Application<CamundaDrop
   public void run(Config configuration, Environment environment) throws Exception {
     CamundaHealthChecks.processIsDeployed(environment, PROCESS_DEFINITION_KEY);
 
+    final StartProcessTask startProcessTask = new StartProcessTask();
+    environment.admin().addTask(startProcessTask);
+
     environment.lifecycle().addServerLifecycleListener(new ServerLifecycleListener() {
       @Override
       public void serverStarted(final Server server) {
-
-        ProcessEngines.getDefaultProcessEngine().getRuntimeService().startProcessInstanceByKey(PROCESS_DEFINITION_KEY);
+        startProcessTask.startProcess();
       }
     });
 

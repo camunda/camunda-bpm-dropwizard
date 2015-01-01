@@ -2,10 +2,10 @@ server:
   type: simple
   connector:
     type: http
-    port: 5678
+    port: %s
 camunda:
   historyLevel: auto
-  jobExecutorActivate: true
+  jobExecutorActivate: %s
   database:
     driverClass: com.mysql.jdbc.Driver
     user: camunda

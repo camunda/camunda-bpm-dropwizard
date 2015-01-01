@@ -1,6 +1,7 @@
 package org.camunda.bpm.extension.dropwizard;
 
 import io.dropwizard.lifecycle.Managed;
+import io.dropwizard.setup.Environment;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
