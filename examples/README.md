@@ -18,6 +18,8 @@ start a local php server running:
     php -S localhost:8000 adminer-4.1.0.php 
 
 and open the page in your browser. Connect with your `boot2docker ip` address and `user=camunda, password=camunda, db=camunda`.
+
+See also: [Easy MySQL setup with docker](http://jangalinski.github.io/2014/12/29/easy-mysql-setup-with-docker/)
  
 ### connect JBoss to DB
 

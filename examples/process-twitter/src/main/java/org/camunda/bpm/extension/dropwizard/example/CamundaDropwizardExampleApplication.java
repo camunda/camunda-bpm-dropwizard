@@ -16,7 +16,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class CamundaDropwizardExampleApplication extends Application<CamundaDropwizardExampleApplication.Config> {
 
-  public static final String PROCESS_DEFINITION_KEY = "process_dw_invoice";
+  public static final String PROCESS_DEFINITION_KEY = "process_dw_twitter";
   private final Logger logger = getLogger(this.getClass());
 
   @Override

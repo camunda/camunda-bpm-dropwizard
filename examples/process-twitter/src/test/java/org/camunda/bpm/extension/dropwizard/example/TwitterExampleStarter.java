@@ -14,20 +14,20 @@ import static java.lang.String.format;
 /**
  * This is not a test, just another main() class to start a configured application without messing with the main/java code.
  */
-public class CamundaApplicationStarter {
+public class TwitterExampleStarter {
 
 
   public static class _1 {
 
      public static void main(String... unused) throws Exception {
-        CamundaDropwizardExampleApplication.main("server", createConfig(5678, true));
+        CamundaDropwizardExampleApplication.main("server", createConfig(5680, true));
     }
   }
 
   public static class _2 {
 
      public static void main(String... unused) throws Exception {
-        CamundaDropwizardExampleApplication.main("server", createConfig(5679, false));
+        CamundaDropwizardExampleApplication.main("server", createConfig(5681, false));
     }
   }
 

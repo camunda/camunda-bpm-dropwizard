@@ -1,0 +1,13 @@
+server:
+  type: simple
+  connector:
+    type: http
+    port: %s
+camunda:
+  historyLevel: auto
+  jobExecutorActivate: %s
+  database:
+    driverClass: com.mysql.jdbc.Driver
+    user: camunda
+    password: camunda
+    url: jdbc:mysql://192.168.59.103/camunda

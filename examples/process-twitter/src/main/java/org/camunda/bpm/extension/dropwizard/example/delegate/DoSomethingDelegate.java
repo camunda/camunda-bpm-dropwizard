@@ -13,6 +13,6 @@ public class DoSomethingDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        logger.info("executed delegate: {} {}", execution, CamundaDropwizardExampleApplication.PROCESS_DEFINITION_KEY);
+      logger.info("executed delegate: {} {}", execution, CamundaDropwizardExampleApplication.PROCESS_DEFINITION_KEY);
     }
 }
