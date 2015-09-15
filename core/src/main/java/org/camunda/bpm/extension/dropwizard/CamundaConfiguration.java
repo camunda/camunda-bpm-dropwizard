@@ -46,16 +46,16 @@ public class CamundaConfiguration extends Configuration implements Serializable 
   }
 
   public ProcessEngineConfiguration buildProcessEngineConfiguration() {
-    // @formatter:off
     return ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration()
       .setJdbcDriver(camunda.database.getDriverClass())
       .setJdbcUrl(camunda.database.getUrl())
       .setJdbcUsername(camunda.database.getUser())
       .setJdbcPassword(camunda.database.getPassword())
-      .setHistory(camunda.historyLevel)
       .setJobExecutorActivate(false) // we activate the executor via LifecycleListener (see CamundaBundle)
+      .setJdbcMaxActiveConnections(camunda.database.getMaxSize())
+      .setHistory(camunda.historyLevel)
+      .setDatabaseSchemaUpdate(camunda.databaseSchemaUpdate)
       .setJobExecutorDeploymentAware(camunda.jobExecutorDeploymentAware);
-    // @formatter:on
   }
 
   public CamundaConfiguration overwriteHistoryLevel(final Environment environment) {
@@ -104,6 +104,13 @@ public class CamundaConfiguration extends Configuration implements Serializable 
     @JsonProperty
     private boolean jobExecutorActivate;
 
+    @NotNull
+    @JsonProperty
+    private String[] deployProcessKeys = new String[] {};
+
+    @JsonProperty
+    private String[] startProcessKeys = new String[] {};
+
     /**
      * Since it is most likely that dropwizard-camunda-processes will run as a heterogeneous cluster,
      * the default value is changed to <code>true</code>.
@@ -111,6 +118,9 @@ public class CamundaConfiguration extends Configuration implements Serializable 
     @NotNull
     @JsonProperty
     private boolean jobExecutorDeploymentAware = true;
+
+    @JsonProperty
+    private String databaseSchemaUpdate = "false";
 
     @NotEmpty
     @JsonProperty
@@ -137,6 +147,14 @@ public class CamundaConfiguration extends Configuration implements Serializable 
     public boolean isJobExecutorActivate() {
       return jobExecutorActivate;
     }
-  }
 
+    public String[] getDeployProcessKeys() {
+      return deployProcessKeys;
+    }
+
+    public String[] getStartProcessKeys() {
+      return startProcessKeys;
+    }
+  }
 }
+

@@ -12,6 +12,13 @@
   </parent>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-rest</artifactId>
+      <classifier>classes</classifier>
+    </dependency>
+
     <dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-jdbi</artifactId>

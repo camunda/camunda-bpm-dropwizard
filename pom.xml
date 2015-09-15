@@ -62,6 +62,12 @@
         <version>${dropwizard.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-engine-rest</artifactId>
+        <version>${camunda.version}</version>
+        <classifier>classes</classifier>
+      </dependency>
 
       <dependency>
         <groupId>com.h2database</groupId>

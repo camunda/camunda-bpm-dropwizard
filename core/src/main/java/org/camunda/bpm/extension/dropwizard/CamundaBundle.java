@@ -1,15 +1,11 @@
 package org.camunda.bpm.extension.dropwizard;
 
 import io.dropwizard.ConfiguredBundle;
-import io.dropwizard.lifecycle.ServerLifecycleListener;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.extension.dropwizard.function.ActivateJobExecutor;
 import org.camunda.bpm.extension.dropwizard.healthcheck.CamundaHealthChecks;
-import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -36,7 +32,7 @@ public class CamundaBundle implements ConfiguredBundle<CamundaConfiguration> {
       environment.lifecycle().addServerLifecycleListener(ActivateJobExecutor.serverLifecycleListener());
     }
 
-    environment.servlets().addServletListeners(new DropwizardProcessApplication());
+    environment.servlets().addServletListeners(new org.camunda.bpm.extension.dropwizard.application.CamundaServletProcessApplication());
 
     CamundaHealthChecks.processEngineIsRunning(environment);
 
