@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.camunda.bpm.engine.ProcessEngineConfiguration.HISTORY_AUDIT;
 import static org.camunda.bpm.engine.ProcessEngineConfiguration.HISTORY_FULL;
 import static org.mockito.Matchers.any;
@@ -72,7 +72,7 @@ public class CamundaConfigurationTest {
 
   @Test
   public void fails_for_empty_file() {
-    thrown.expect(NullPointerException.class);
+    thrown.expectCause(CoreMatchers.is(ConfigurationParsingException.class));
     configurationTestRule.apply("");
   }
 

@@ -4,7 +4,6 @@ package org.camunda.bpm.extension.dropwizard.example;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
-import org.camunda.bpm.extension.dropwizard.example.CamundaDropwizardExampleApplication;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,14 +19,14 @@ public class InvoiceExampleStarter {
   public static class _1 {
 
      public static void main(String... unused) throws Exception {
-        CamundaDropwizardExampleApplication.main("server", createConfig(5678, true));
+        DropwizardInvoiceExampleApplication.main("server", createConfig(5678, true));
     }
   }
 
   public static class _2 {
 
      public static void main(String... unused) throws Exception {
-        CamundaDropwizardExampleApplication.main("server", createConfig(5679, false));
+        DropwizardInvoiceExampleApplication.main("server", createConfig(5679, false));
     }
   }
 

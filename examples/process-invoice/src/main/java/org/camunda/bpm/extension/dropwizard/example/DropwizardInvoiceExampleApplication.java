@@ -1,10 +1,10 @@
 package org.camunda.bpm.extension.dropwizard.example;
 
+import de.holisticon.dropwizard.weld.WeldBundle;
 import io.dropwizard.Application;
 import io.dropwizard.lifecycle.ServerLifecycleListener;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.extension.dropwizard.CamundaBundle;
 import org.camunda.bpm.extension.dropwizard.CamundaConfiguration;
 import org.camunda.bpm.extension.dropwizard.example.task.StartProcessTask;
@@ -14,9 +14,9 @@ import org.slf4j.Logger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class CamundaDropwizardExampleApplication extends Application<CamundaDropwizardExampleApplication.Config> {
+public class DropwizardInvoiceExampleApplication extends Application<DropwizardInvoiceExampleApplication.Config> {
 
-  public static final String PROCESS_DEFINITION_KEY = "process_dw_twitter";
+  public static final String PROCESS_DEFINITION_KEY = "process_dw_invoice";
   private final Logger logger = getLogger(this.getClass());
 
   @Override
@@ -38,6 +38,7 @@ public class CamundaDropwizardExampleApplication extends Application<CamundaDrop
   @Override
   public void initialize(final Bootstrap<Config> bootstrap) {
     // This is basically all you have to do (as long as you provide the necessary configuration yaml).
+    bootstrap.addBundle(new WeldBundle());
     bootstrap.addBundle(new CamundaBundle());
   }
 
@@ -49,6 +50,6 @@ public class CamundaDropwizardExampleApplication extends Application<CamundaDrop
   }
 
   public static void main(String... args) throws Exception {
-    new CamundaDropwizardExampleApplication().run(args);
+    new DropwizardInvoiceExampleApplication().run(args);
   }
 }

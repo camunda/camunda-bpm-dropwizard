@@ -2,8 +2,6 @@
 
 The power of camunda and REST in a single jar.
 
-![Screenshot or code snippet](http://placehold.it/550x350&text=Image%20or%20code%20snippet%20if%20applicable)
-
 
 ## Get started
 
@@ -14,6 +12,20 @@ Put into another file if too big._
 
 * Dropwizard does not support Java6, so despite the camunda standard compiler settings, this has do be done with targetJDK=1.7
 
+## Repository structure
+
+We need to separate the extension (production) code from the examples, so we do not accidentally use some parent 
+pom/dependency management features in the example code. Instead of providing separate repositories, we will use a split repo
+ layout:
+ 
+ ```
+ camunda-bpm-dropwizard-root # just a common parent pom, defines properties but nothing else
+ |- extension                # the actual implementation
+ ||- camunda-bpm-dropwizard-core # starting engine, jetty and rest
+ |- examples                 # home of the examples
+ ||- process-invoice         # the camunda invoice example on dropwizard
+ ||- process-twitter         # the camunda twitter example on dropwizard
+ ```
 
 ## Resources
 

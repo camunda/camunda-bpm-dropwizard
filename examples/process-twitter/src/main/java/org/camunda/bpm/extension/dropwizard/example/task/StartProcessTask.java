@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import io.dropwizard.servlets.tasks.Task;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.extension.dropwizard.example.CamundaDropwizardExampleApplication;
+import org.camunda.bpm.extension.dropwizard.example.DropwizardTwitterExampleApplication;
 
 import java.io.PrintWriter;
 
@@ -22,6 +22,6 @@ public class StartProcessTask extends Task {
   }
 
   public ProcessInstance startProcess() {
-    return ProcessEngines.getDefaultProcessEngine().getRuntimeService().startProcessInstanceByKey(CamundaDropwizardExampleApplication.PROCESS_DEFINITION_KEY);
+    return ProcessEngines.getDefaultProcessEngine().getRuntimeService().startProcessInstanceByKey(DropwizardTwitterExampleApplication.PROCESS_DEFINITION_KEY);
   }
 }

@@ -75,12 +75,8 @@ public class CamundaConfiguration extends Configuration implements Serializable 
 
   @VisibleForTesting
   Optional<String> selectHistoryLevel(final Environment environment) {
-    try {
       final DBI dbi = new DBIFactory().build(environment, camunda.database, "camundaDataSource");
       return dbi.onDemand(GetHistoryLevelDao.class).getFailsafe();
-    } catch (ClassNotFoundException e) {
-      throw propagate(e);
-    }
   }
 
   @Override

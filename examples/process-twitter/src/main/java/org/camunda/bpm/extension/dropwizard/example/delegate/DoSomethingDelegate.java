@@ -4,7 +4,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.camunda.bpm.extension.dropwizard.example.CamundaDropwizardExampleApplication;
+import org.camunda.bpm.extension.dropwizard.example.DropwizardTwitterExampleApplication;
 import org.slf4j.Logger;
 
 public class DoSomethingDelegate implements JavaDelegate {
@@ -13,6 +13,6 @@ public class DoSomethingDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-      logger.info("executed delegate: {} {}", execution, CamundaDropwizardExampleApplication.PROCESS_DEFINITION_KEY);
+      logger.info("executed delegate: {} {}", execution, DropwizardTwitterExampleApplication.PROCESS_DEFINITION_KEY);
     }
 }
