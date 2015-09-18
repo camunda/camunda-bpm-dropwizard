@@ -68,6 +68,7 @@ _specify a short list of things that yet need to be done (unless you organize it
 ## Maintainer
 
 * [Jan Galinski](https://github.com/jangalinski), [Holisticon AG](http://www.holisticon.de/)
+* [Nico Rehwaldt](https://github.com/nikku), Camunda Services GmbH
 
 ## License
 
