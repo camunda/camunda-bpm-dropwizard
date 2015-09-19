@@ -20,11 +20,11 @@ pom/dependency management features in the example code. Instead of providing sep
  
  ```
  camunda-bpm-dropwizard-root # just a common parent pom, defines properties but nothing else
- |- extension                # the actual implementation
- ||- camunda-bpm-dropwizard-core # starting engine, jetty and rest
- |- examples                 # home of the examples
- ||- process-invoice         # the camunda invoice example on dropwizard
- ||- process-twitter         # the camunda twitter example on dropwizard
+ +- extension                # the actual implementation
+ |  +- camunda-bpm-dropwizard-core # starting engine, jetty and rest
+ \- examples                 # home of the examples
+    +- process-invoice         # the camunda invoice example on dropwizard
+    \- process-twitter         # the camunda twitter example on dropwizard
  ```
 
 ## Resources
